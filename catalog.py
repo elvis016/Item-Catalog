@@ -216,7 +216,7 @@ def editItem(catalog_id, item_id):
     catalogs = session.query(
         Catalog).all()
     editItem = session.query(
-        Item).filter_by(catalog_id=catalog_id).one()
+        Item).filter_by(id=item_id).one()
 
     if 'username' not in login_session:
         return redirect(url_for('showLogin'))
