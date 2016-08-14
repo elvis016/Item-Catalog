@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "section.html" %}
+
+<div class="row">
+  <div class="col-xs-12 col-md-12">
+    <h3 class="text-capitalize">catalog: {{catalog.name}}</h3>
+    <a class="btn btn-default" href="{{url_for('editCatalog', catalog_id=catalog.id)}}">Rename Catalog</a>
+    <a class="btn btn-default" href="{{url_for('deleteCatalog', catalog_id=catalog.id)}}">Delete Catalog</a>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12 col-md-12 text-left text-info">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+
+        {% for message in messages %}
+            <p class="text-danger text-capitalize"> <strong> {{ message }} </strong> </p>
+        {% endfor %}
+
+      {% endif %}
+    {% endwith %}
+  </div>
+</div>
+
+<main>
+  <div class="row">
+    <div class="col-xs-6 col-md-12">
+      <h4 class="text-capitalize">Items:</h4>
+      <ul>
+        {% for item in items %}
+          <li class="text-capitalize"><a href="{{ url_for('showItem', catalog_id=item.catalog_id, item_id=item.id) }}">Name: {{ item.name }}</a></li>
+          <p>Description: {{ item.description }}</p>
+        {% endfor %}
+      </ul>
+      <a class="btn btn-default" href="{{url_for('addItem', catalog_id=catalog.id)}}">Add Item</a>
+    </div>
+  </div>
+</main>
+
+
+{% endblock %}

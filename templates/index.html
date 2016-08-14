@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "section.html" %}
+
+<div class="row">
+  <div class="col-xs-12 col-md-12 text-center text-info">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li class="text-danger text-capitalize"> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </div>
+</div>
+
+<div class="row">
+
+  <div class="col-xs-6 col-md-6">
+    <header>
+      <div class="row">
+        <div class="col-md-12">
+          <h4 class="text-center">Catalog</h4>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="row">
+        <div class="col-xs-12 col-md-12">
+          <ul>
+              {% for catalog in catalogs %}
+                <li class="text-info text-capitalize"><a href="{{ url_for('showCatalog', catalog_id=catalog.id) }}">{{ catalog.name }}</a></li>
+              {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="row text-right">
+        <div class="col-xs-12 col-md-12">
+          <a class="btn btn-default" href="{{url_for('newCatalog')}}">Add New Catalog</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div class="col-xs-6 col-md-6">
+    <header>
+      <div class="row">
+        <div class="col-xs-12 col-md-12">
+          <h4 class="text-center">Newly Added Items</h4>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="row">
+        <div class="col-xs-12 col-md-12">
+          <ul>
+              {% for item in items %}
+                <li class="text-info text-capitalize"><a href="{{ url_for('showItem', catalog_id=item.catalog_id, item_id=item.id) }}">{{ item.name }}</a></li>
+              {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="row text-right">
+        <div class="col-xs-12 col-md-12">
+          <a class="btn btn-default" href="{{url_for('newItem')}}">Add New Item</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+{% endblock %}

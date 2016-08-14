@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "section.html" %}
+
+<div class="row">
+  <div class="col-md-12">
+    <h3>Add New Catalog</h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <form action="{{url_for('newCatalog')}}" method="post">
+      <label for="name">Name:</label>
+      <input type="text" class="form-control" name="name" placeholder="new catalog">
+      <div class="row">
+        <div class="col-md-12">
+          <p class="text-danger">{{ error }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <input class="btn btn-default" type="submit" value="Create">
+          <a class="btn btn-default" href="{{url_for('mainPage')}}">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+{% endblock %}

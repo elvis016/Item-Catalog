@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "section.html" %}
+
+<div class="row">
+  <div class="col-md-12">
+    <h3>Delete Item</h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12 col-md-12">
+    <h4 class="text-danger">Are you sure you want to delete item [ <u>{{ deleteItem.name }}</u> ] ?</h4>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-6">
+    <form action="{{url_for('deleteItem', catalog_id=deleteItem.catalog_id, item_id=deleteItem.id)}}" method="post">
+      <p>{{deleteItem.name}}</p>
+      <div class="row">
+        <div class="col-xs-12 col-md-12">
+          <input class="btn btn-default" type="submit" value="Delete">
+          <a class="btn btn-default" href="{{url_for('showItem', catalog_id=deleteItem.catalog_id, item_id=deleteItem.id)}}">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+{% endblock %}

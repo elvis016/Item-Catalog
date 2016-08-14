@@ -1,0 +1,23 @@
+
+<div class="row">
+  <div class="col-md-12">
+    <br>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-6 col-md-6 text-info">
+    <a class="btn btn-default" href="{{url_for('mainPage')}}">
+      <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Main Page
+    </a>
+  </div>
+
+  <div class="col-xs-6 col-md-6 text-primary text-right">
+    {% if 'username' not in session %}
+      <a class="btn btn-default" href="{{url_for('showLogin')}}">Log In</a>
+    {% else %}
+      <a class="btn btn-default" href="{{url_for('disconnect')}}">Log Out</a>
+    {% endif %}
+  </div>
+</div>
+

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "section.html" %}
+
+<div class="row">
+  <div class="col-md-12">
+    <h3>Add New Item</h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <form action="{{url_for('addItem', catalog_id=catalog.id)}}" method="post">
+      <h4>Catalog: {{catalog.name}}</h4>
+      <label for="name">Name:</label>
+        <input type="text" class="form-control" name="name" placeholder="new item">
+      <label for="description">Description:</label>
+      <textarea class="form-control" rows="5" name="description" placeholder="description"></textarea>
+      <div class="row">
+        <div class="col-md-12">
+          <p class="text-danger">{{ error }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <input class="btn btn-default" type="submit" value="Create">
+          <a class="btn btn-default" href="{{url_for('showCatalog', catalog_id=catalog.id)}}">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+{% endblock %}

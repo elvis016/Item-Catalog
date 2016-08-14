@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "section.html" %}
+
+<div class="row">
+  <div class="col-md-12">
+    <h3>Edit Item</h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <form action="{{url_for('editItem', catalog_id=item.catalog_id, item_id=item.id)}}" method="post">
+      <div class="row">
+        <div class="col-xs-12 col-md-12">
+          <label>Catalog:</label>
+          <select name="catalog" class="form-control" required>
+          {% for catalog in catalogs %}
+            {% if catalog.id == item.catalog_id %}
+              <option value="{{ catalog.id }}" selected>{{ catalog.name }}</option>
+            {% else %}
+              <option value="{{ catalog.id }}">{{ catalog.name }}</option>
+            {% endif %}
+          {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-12">
+          <br>
+        </div>
+      </div>
+      <label for="name">Name:</label>
+        <input type="text" class="form-control" name="name" placeholder="{{item.name}}">
+      <label for="description">Description:</label>
+      <textarea class="form-control" rows="5" name="description" placeholder="{{item.description}}"></textarea>
+      <div class="row">
+        <div class="col-md-12">
+          <p class="text-danger">{{ error }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <input class="btn btn-default" type="submit" value="Edit">
+          <a class="btn btn-default" href="{{url_for('mainPage')}}">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+{% endblock %}

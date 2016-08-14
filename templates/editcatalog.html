@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "section.html" %}
+
+<div class="row">
+  <div class="col-xs-12 col-md-12">
+    <h3>Rename Catalog</h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-6 col-md-6">
+    <form action="{{url_for('editCatalog', catalog_id=editCatalog.id)}}" method="post">
+      <label for="name">Name:</label>
+      <input type="text" class="form-control" name="name" placeholder="{{editCatalog.name}}">
+      <div class="row">
+        <div class="col-xs-12 col-md-12">
+          <p class="text-danger">{{ error }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-12">
+          <input class="btn btn-default" type="submit" value="Rename">
+          <a class="btn btn-default" href="{{url_for('showCatalog', catalog_id=editCatalog.id)}}">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+{% endblock %}
