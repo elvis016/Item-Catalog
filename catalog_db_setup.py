@@ -38,6 +38,9 @@ class Catalog(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
+    item = relationship(
+        'Item', backref='catalog', cascade='all, delete, delete-orphan')
+
     # Use this serialize function to be able to send JSON objects in a
     # serializable format
     @property
@@ -60,7 +63,6 @@ class Item(Base):
     catalog_id = Column(Integer, ForeignKey('catalog.id'))
     time_created = Column(DateTime(timezone=True), server_default=func.now())
     time_updated = Column(DateTime(timezone=True), onupdate=func.now())
-    catalog = relationship(Catalog)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 

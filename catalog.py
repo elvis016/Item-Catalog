@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, jsonify
 from flask import url_for, flash
+from functools import wraps
 
 from sqlalchemy import create_engine, desc, asc
 from sqlalchemy.orm import sessionmaker
@@ -32,6 +33,16 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
+# login required decorator
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in login_session:
+            return redirect(url_for('showLogin'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 # show all catalog and newly added items
 @app.route('/')
 @app.route('/main/')
@@ -39,7 +50,9 @@ def mainPage():
     catalogs = session.query(Catalog).order_by(asc(Catalog.name))
     items = session.query(Item).order_by(desc(Item.time_created))
 
-    return render_template('index.html', catalogs=catalogs, items=items)
+    return render_template(
+                'index.html', catalogs=catalogs,
+                items=items, login_session=login_session)
 
 
 # add new item where a list of existing catalog can be selected from
@@ -77,10 +90,8 @@ def newItem():
 
 # add new catalog
 @app.route('/catalog/new', methods=['GET', 'POST'])
+@login_required
 def newCatalog():
-    if 'username' not in login_session:
-        return redirect(url_for('showLogin'))
-
     if request.method == 'POST':
         name = request.form['name']
         user_id = login_session['user_id']
@@ -123,10 +134,8 @@ def showItem(catalog_id, item_id):
 # add new item in selected catalog
 @app.route(
     '/catalog/<int:catalog_id>/newitem', methods=['GET', 'POST'])
+@login_required
 def addItem(catalog_id):
-    if 'username' not in login_session:
-        return redirect(url_for('showLogin'))
-
     catalog = session.query(
         Catalog).filter_by(id=catalog_id).one()
 
@@ -154,12 +163,10 @@ def addItem(catalog_id):
 
 # edit name of catalog
 @app.route('/catalog/<int:catalog_id>/edit/', methods=['GET', 'POST'])
+@login_required
 def editCatalog(catalog_id):
     editCatalog = session.query(
         Catalog).filter_by(id=catalog_id).one()
-
-    if 'username' not in login_session:
-        return redirect(url_for('showLogin'))
 
     if editCatalog.user_id != login_session['user_id']:
         return redirect(url_for('showLogin'))
@@ -182,14 +189,10 @@ def editCatalog(catalog_id):
 
 # delete selected catalog
 @app.route('/catalog/<int:catalog_id>/delete/', methods=['GET', 'POST'])
+@login_required
 def deleteCatalog(catalog_id):
     deleteCatalog = session.query(
         Catalog).filter_by(id=catalog_id).one()
-    deleteItems = session.query(
-        Item).filter_by(catalog_id=catalog_id).all()
-
-    if 'username' not in login_session:
-        return redirect(url_for('showLogin'))
 
     if deleteCatalog.user_id != login_session['user_id']:
         return redirect(url_for('showLogin'))
@@ -198,9 +201,6 @@ def deleteCatalog(catalog_id):
         session.delete(deleteCatalog)
         flash('Catalog [ %s ] has been deleted!' % deleteCatalog.name)
         session.commit()
-        for item in deleteItems:
-            session.delete(item)
-            session.commit()
         return redirect(url_for('mainPage'))
 
     else:
@@ -212,14 +212,12 @@ def deleteCatalog(catalog_id):
 @app.route(
     '/catalog/<int:catalog_id>/item/<int:item_id>/edit/',
     methods=['GET', 'POST'])
+@login_required
 def editItem(catalog_id, item_id):
     catalogs = session.query(
         Catalog).all()
     editItem = session.query(
         Item).filter_by(id=item_id).one()
-
-    if 'username' not in login_session:
-        return redirect(url_for('showLogin'))
 
     if editItem.user_id != login_session['user_id']:
         return redirect(url_for('showLogin'))
@@ -249,12 +247,10 @@ def editItem(catalog_id, item_id):
 @app.route(
     '/catalog/<int:catalog_id>/item/<int:item_id>/delete/',
     methods=['GET', 'POST'])
+@login_required
 def deleteItem(catalog_id, item_id):
     deleteItem = session.query(
         Item).filter_by(id=item_id).one()
-
-    if 'username' not in login_session:
-        return redirect(url_for('showLogin'))
 
     if deleteItem.user_id != login_session['user_id']:
         return redirect(url_for('showLogin'))

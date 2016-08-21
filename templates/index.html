@@ -39,6 +39,7 @@
       </div>
     </main>
 
+    {% if 'username' in session %}
     <footer>
       <div class="row text-right">
         <div class="col-xs-12 col-md-12">
@@ -46,6 +47,7 @@
         </div>
       </div>
     </footer>
+    {% endif %}
   </div>
 
   <div class="col-xs-6 col-md-6">
@@ -69,6 +71,7 @@
       </div>
     </main>
 
+    {% if 'username' in session %}
     <footer>
       <div class="row text-right">
         <div class="col-xs-12 col-md-12">
@@ -76,6 +79,7 @@
         </div>
       </div>
     </footer>
+    {% endif %}
 
   </div>
 </div>
